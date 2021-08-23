@@ -133,7 +133,6 @@ extension CameraController {
                 try configureDeviceInputs()
                 try configurePhotoOutput()
                 try configureDataOutput()
-                try configureVideoOutput()
             }
 
             catch {
@@ -403,8 +402,6 @@ extension CameraController {
 
             let fileUrl = path.appendingPathComponent(fileName)
         try? FileManager.default.removeItem(at: fileUrl)
-        videoOutput!.startRecording(to: fileUrl, recordingDelegate: self)
-        self.videoRecordCompletionBlock = completion
     }
 
     func stopRecording(completion: @escaping (Error?) -> Void) {
@@ -412,7 +409,6 @@ extension CameraController {
             completion(CameraControllerError.captureSessionIsMissing)
             return
         }
-        self.videoOutput?.stopRecording()
     }
 }
 
@@ -579,10 +575,5 @@ extension UIImage {
 
 extension CameraController: AVCaptureFileOutputRecordingDelegate {
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
-        if error == nil {
-            self.videoRecordCompletionBlock?(outputFileURL, nil)
-        } else {
-            self.videoRecordCompletionBlock?(nil, error)
-        }
     }
 }

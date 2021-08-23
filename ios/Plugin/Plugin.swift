@@ -279,8 +279,6 @@ public class CameraPreview: CAPPlugin {
                     return
                 }
 
-                    self.videoUrl = image
-
                     call.resolve(["value":image.absoluteString])
                 }
             }
